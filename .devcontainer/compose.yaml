@@ -1,7 +1,7 @@
 name: "avantsoft"
 
 services:
-  rails-app:
+  rails:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
@@ -15,7 +15,8 @@ services:
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-
-  
+    # Rails default composer file says to use only "forwardPorts" on
+    # **devcontainer.json**. However, we also need to add the ports here so we
+    # can access it using Devcontainer CLI
+    ports:
+      - "3000:3000"
