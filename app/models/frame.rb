@@ -14,6 +14,19 @@ class Frame < ApplicationRecord
   scope :top_edge, ->(boundary) { where("y + height / 2.0 > ?", boundary) }
   scope :bottom_edge, ->(boundary) { where("y - height / 2.0 < ?", boundary) }
 
+  def destroyable?
+    return true unless circles.exists?
+
+    errors.add(:base, "Can't destroy a frame with circles")
+    false
+  end
+
+  def destroy
+    return super if destroyable?
+
+    false
+  end
+
   private
 
   def overlapping_frames

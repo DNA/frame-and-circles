@@ -46,11 +46,19 @@ RSpec.describe "/frames", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested frame" do
+    it "destroys an empty frame" do
       delete frame_url(valid_frame.id), as: :json
 
       expect(response).to have_http_status(:no_content)
       expect { Frame.find(valid_frame.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "return error if frame is not empty" do
+      valid_frame.circles.create!(x: 0, y: 0, diameter: 10)
+
+      delete frame_url(valid_frame.id), as: :json
+
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it "return 404 if it doesn't exist" do

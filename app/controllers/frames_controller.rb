@@ -16,7 +16,11 @@ class FramesController < ApplicationController
   end
 
   def destroy
-    @frame.destroy!
+    if @frame.destroy
+      render json: @frame, status: :no_content
+    else
+      render json: @frame.errors, status: :unprocessable_content
+    end
   end
 
   private

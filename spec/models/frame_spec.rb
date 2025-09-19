@@ -62,4 +62,39 @@ RSpec.describe Frame, type: :model do
       end
     end
   end
+
+  describe '#destroy' do
+    subject { described_class.create!(x: 50, y: 50, width: 100, height: 100) }
+
+    context 'when the frame is empty' do
+      before { subject.destroyable? }
+
+      it { is_expected.to be_destroyable }
+
+      it 'destroy the model' do
+        expect { subject.destroy }.to change(Frame, :count).by(-1)
+      end
+
+      it "don't have errors" do
+        expect(subject.errors[:base]).to be_empty
+      end
+    end
+
+    context 'when the frame has circles' do
+      before do
+        subject.circles.create!(x: 60, y: 60, diameter: 10)
+        subject.destroyable?
+      end
+
+      it { is_expected.not_to be_destroyable }
+
+      it "Doesn't destroy the model" do
+        expect { subject.destroy }.not_to change(Frame, :count)
+      end
+
+      it 'has errors' do
+        expect(subject.errors[:base]).to include("Can't destroy a frame with circles")
+      end
+    end
+  end
 end
