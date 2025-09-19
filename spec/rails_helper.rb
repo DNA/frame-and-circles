@@ -1,4 +1,13 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+
+# Code coverage setup - must be loaded before application code
+require 'simplecov'
+SimpleCov.start 'rails' do
+  enable_coverage :branch
+
+  minimum_coverage 90 if ENV['COVERAGE_MINIMUM'] != 'false'
+end
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
