@@ -29,6 +29,6 @@ class FramesController < ApplicationController
     end
 
     def frame_params
-      params.fetch(:frame, {}).permit(:x, :y, :width, :height)
+      params.fetch(:frame, {}).permit(:x, :y, :width, :height, { circles_attributes: %i[x y diameter ] })
     end
 end

@@ -1,6 +1,7 @@
 class Frame < ApplicationRecord
   has_many :circles
   validates_associated :circles
+  accepts_nested_attributes_for :circles
 
   composed_of :edge, class_name: "Values::FrameEdge",
                      mapping: [ %i[x x], %i[y y], %i[width width], %i[height height] ]

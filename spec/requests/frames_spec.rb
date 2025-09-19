@@ -43,6 +43,37 @@ RSpec.describe "/frames", type: :request do
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
+
+    context "with circles" do
+      let(:frame_with_circles) do
+        {
+          frame: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            circles_attributes: [
+              { x: 10, y: 10, diameter: 10 },
+              { x: 20, y: 20, diameter: 10 },
+              { x: 30, y: 30, diameter: 10 }
+            ]
+          }
+        }
+      end
+
+      it "creates a new Frame with circles" do
+        expect {
+          post frames_url, params: frame_with_circles, as: :json
+        }.to change(Frame, :count).by(1).and change(Circle, :count).by(3)
+      end
+
+      it "Returns a HTTP Created response" do
+        post frames_url, params: frame_with_circles, as: :json
+
+        expect(response).to have_http_status(:created)
+        expect(response.content_type).to match(a_string_including("application/json"))
+      end
+    end
   end
 
   describe "DELETE /destroy" do
