@@ -1,0 +1,177 @@
+---
+openapi: 3.0.1
+info:
+  title: Frames and Circles API
+  version: v1
+  description: API for managing geometric frames and circles. Frames are rectangular
+    areas that can contain circles, with validation for overlaps and boundaries.
+servers:
+- url: http://localhost:3000
+  description: Development server
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
+  description: Production server
+paths:
+  "/frames":
+    post:
+      summary: Creates a frame
+      tags:
+      - Frames
+      parameters: []
+      responses:
+        '201':
+          description: Frame created successfully with circles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  x:
+                    type: string
+                    example: '50.0'
+                  "y":
+                    type: string
+                    example: '50.0'
+                  width:
+                    type: string
+                    example: '100.0'
+                  height:
+                    type: string
+                    example: '80.0'
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                required:
+                - id
+                - x
+                - "y"
+                - width
+                - height
+                - created_at
+                - updated_at
+        '422':
+          description: Invalid circles within frame
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  x:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  "y":
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  width:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  height:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  base:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - Frame overlaps with existing frame(s)
+                  circles.x:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  circles.y:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - is not a number
+                  circles.diameter:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - must be greater than 0
+                  circles.base:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - Circle must be within frame boundaries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frame:
+                  type: object
+                  properties:
+                    x:
+                      type: number
+                      example: 50.0
+                      description: X coordinate of the frame center
+                    "y":
+                      type: number
+                      example: 50.0
+                      description: Y coordinate of the frame center
+                    width:
+                      type: number
+                      example: 100.0
+                      description: Width of the frame
+                      minimum: 0.1
+                    height:
+                      type: number
+                      example: 80.0
+                      description: Height of the frame
+                      minimum: 0.1
+                    circles_attributes:
+                      type: array
+                      description: Array of circles to create within the frame
+                      items:
+                        type: object
+                        properties:
+                          x:
+                            type: number
+                            example: 25.0
+                            description: X coordinate of the circle center
+                          "y":
+                            type: number
+                            example: 25.0
+                            description: Y coordinate of the circle center
+                          diameter:
+                            type: number
+                            example: 10.0
+                            description: Diameter of the circle
+                            minimum: 0.1
+                        required:
+                        - x
+                        - "y"
+                        - diameter
+                  required:
+                  - x
+                  - "y"
+                  - width
+                  - height
+              required:
+              - frame
