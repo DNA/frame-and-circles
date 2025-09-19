@@ -54,14 +54,14 @@ RSpec.describe "/circles", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:attributes) {
-        { circle: { x: 100 } }
+        { circle: { x: 40 } }
       }
 
       it "updates the requested circle" do
         patch circle_url(valid_circle), params: attributes, as: :json
 
         valid_circle.reload
-        expect(valid_circle.x).to eq(100)
+        expect(valid_circle.x).to eq(40)
       end
 
       it "renders a JSON response with the circle" do
