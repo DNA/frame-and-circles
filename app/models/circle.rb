@@ -2,7 +2,8 @@ class Circle < ApplicationRecord
   belongs_to :frame
 
   composed_of :edge, class_name: "Values::CircleEdge",
-                    mapping: [ %i[x x], %i[y y], %i[diameter diameter] ]
+                     mapping: [ %i[x x], %i[y y], %i[diameter diameter] ],
+                     constructor: ->(x, y, d) { Values::CircleEdge.new(x: x, y: y, diameter: d) }
 
   validates :frame, presence: true
   validates :x, :y, numericality: true
@@ -16,6 +17,13 @@ class Circle < ApplicationRecord
   # then we check if its hypotenuse is smaller than both circles radiuses.
   scope :triangulate_overlapping, ->(x, y, radius) {
     where("SQRT(POWER(x - ?, 2) + POWER(y - ?, 2)) < (diameter / 2.0 + ?)", x, y, radius)
+  }
+
+  # Another pythagorean approach, used to find the distance between
+  # the circle's centers. Then we check if the circle is inside with:
+  # distance_between_centers + inner_circle_radius <= outer_circle_radius
+  scope :within_edge, ->(edge) {
+    where("SQRT(POWER(x - ?, 2) + POWER(y - ?, 2)) + (diameter / 2.0) <= ?", edge.x, edge.y, edge.radius)
   }
 
   def radius

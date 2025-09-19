@@ -1,10 +1,11 @@
 module Values
   class CircleEdge
-    attr_reader :x, :y, :diameter
+    include ActiveModel::API
+    include ActiveModel::Attributes
 
-    def initialize(x, y, diameter)
-      @x, @y, @diameter = x, y, diameter
-    end
+    attribute :x, :float
+    attribute :y, :float
+    attribute :diameter, :float
 
     def radius
       return if diameter.blank?

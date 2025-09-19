@@ -2,7 +2,12 @@ class CirclesController < ApplicationController
   before_action :set_circle, only: %i[ update destroy ]
 
   def index
-    @circles = Circle.all
+    edge = Values::CircleEdge.new(edge_params)
+    frame = params[:frame_id]
+
+    @circles = Circle
+    @circles = @circles.within_edge(edge) if edge.valid?
+    @circles = @circles.in_frame(frame) if frame.present?
 
     render json: @circles
   end
@@ -37,5 +42,9 @@ class CirclesController < ApplicationController
 
     def circle_params
       params.fetch(:circle, {}).permit(:x, :y, :diameter)
+    end
+
+    def edge_params
+      params.permit(:x, :y, :diameter)
     end
 end

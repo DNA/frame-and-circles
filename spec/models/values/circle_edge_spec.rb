@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Values::CircleEdge, type: :model do
-  subject { described_class.new(*attributes) }
+  subject { described_class.new(attributes) }
 
   describe 'initialization' do
-    let(:attributes) { [ 10, 20, 4 ] }
+    let(:attributes) { { x: 10, y: 20, diameter: 4 } }
 
     it 'stores x, y, and diameter values' do
       expect(subject.x).to eq(10)
@@ -15,7 +15,7 @@ RSpec.describe Values::CircleEdge, type: :model do
 
   describe 'radius calculation' do
     context 'with correct values' do
-      let(:attributes) { [ 10, 20, 4 ] }
+      let(:attributes) { { x: 10, y: 20, diameter: 4 } }
 
       it 'calculates radius correctly' do
         expect(subject.radius).to eq(2.0)
@@ -23,14 +23,14 @@ RSpec.describe Values::CircleEdge, type: :model do
     end
 
     context 'when diameter is blank' do
-      let(:attributes) { [ 10, 20, nil ] }
+      let(:attributes) { { x: 10, y: 20, diameter: nil } }
 
       it { expect(subject.radius).to be_nil }
     end
   end
 
   describe 'boundary calculations' do
-    let(:attributes) { [ 10, 20, 4 ] }
+    let(:attributes) { { x: 10, y: 20, diameter: 4 } }
 
     it 'calculates boundaries correctly' do
       expect(subject.left).to eq(8.0)
@@ -41,21 +41,21 @@ RSpec.describe Values::CircleEdge, type: :model do
 
     context 'with missing values' do
       context 'when X is blank' do
-        let(:attributes) { [ nil, 20, 4 ] }
+        let(:attributes) { { x: nil, y: 20, diameter: 4 } }
 
         it { expect(subject.left).to be_nil }
         it { expect(subject.right).to be_nil }
       end
 
       context 'when Y is blank' do
-        let(:attributes) { [ 10, nil, 4 ] }
+        let(:attributes) { { x: 10, y: nil, diameter: 4 } }
 
         it { expect(subject.bottom).to be_nil }
         it { expect(subject.top).to be_nil }
       end
 
       context 'when diameter is blank' do
-        let(:attributes) { [ 10, 20, nil ] }
+        let(:attributes) { { x: 10, y: 20, diameter: nil } }
 
         it { expect(subject.left).to be_nil }
         it { expect(subject.right).to be_nil }
@@ -68,23 +68,23 @@ RSpec.describe Values::CircleEdge, type: :model do
   describe 'within frame boundary checking' do
     let(:frame_edge) { Values::FrameEdge.new(10, 10, 8, 8) } # center: (10,10), bounds: 6-14, 6-14
 
-    subject { described_class.new(*attributes).within_frame?(frame_edge) }
+    subject { described_class.new(attributes).within_frame?(frame_edge) }
 
     context 'when circle is within frame' do
       context "when it's completely inside frame" do
-        let(:attributes) { [ 10, 10, 2 ] } # bounds: 9-11, 19-21
+        let(:attributes) { { x: 10, y: 10, diameter: 2 } } # bounds: 9-11, 19-21
 
         it { is_expected.to be_truthy }
       end
 
       context "when it's touching frame edges" do
-        let(:attributes) { [ 10, 10, 8 ] }
+        let(:attributes) { { x: 10, y: 10, diameter: 8 } }
 
         it { is_expected.to be_truthy }
       end
 
       context 'when circle touches one edge' do
-        let(:attributes) { [ 8, 10, 4 ] }
+        let(:attributes) { { x: 8, y: 10, diameter: 4 } }
 
         it { is_expected.to be_truthy }
       end
@@ -92,31 +92,31 @@ RSpec.describe Values::CircleEdge, type: :model do
 
     context 'when circle extends beyond frame' do
       context 'when it extends beyond left edge' do
-        let(:attributes) { [ 7, 10, 4 ] }
+        let(:attributes) { { x: 7, y: 10, diameter: 4 } }
 
         it { is_expected.to be_falsey }
       end
 
       context 'when it extends beyond right edge' do
-        let(:attributes) { [ 13, 10, 4 ] }
+        let(:attributes) { { x: 13, y: 10, diameter: 4 } }
 
         it { is_expected.to be_falsey }
       end
 
       context 'when it extends beyond bottom edge' do
-        let(:attributes) { [ 10, 7, 4 ] }
+        let(:attributes) { { x: 10, y: 7, diameter: 4 } }
 
         it { is_expected.to be_falsey }
       end
 
       context 'when it extends beyond top edge' do
-        let(:attributes) { [ 10, 13, 4 ] }
+        let(:attributes) { { x: 10, y: 13, diameter: 4 } }
 
         it { is_expected.to be_falsey }
       end
 
       context 'when it completely outside frame' do
-        let(:attributes) { [ 20, 20, 4 ] }
+        let(:attributes) { { x: 20, y: 20, diameter: 4 } }
 
         it { is_expected.to be_falsey }
       end
