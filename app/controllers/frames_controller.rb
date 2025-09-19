@@ -2,7 +2,16 @@ class FramesController < ApplicationController
   before_action :set_frame, only: %i[ show destroy ]
 
   def show
-    render json: @frame
+
+    render json: {
+      x: @frame.x,
+      y: @frame.y,
+      circle_count: @frame.circles.count,
+      topmost_position: @frame.circles.topmost.presence,
+      bottommost_position: @frame.circles.bottommost.presence,
+      leftmost_position: @frame.circles.leftmost.presence,
+      rightmost_position: @frame.circles.rightmost.presence,
+    }
   end
 
   def create

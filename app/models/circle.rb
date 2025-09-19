@@ -26,6 +26,26 @@ class Circle < ApplicationRecord
     where("SQRT(POWER(x - ?, 2) + POWER(y - ?, 2)) + (diameter / 2.0) <= ?", edge.x, edge.y, edge.radius)
   }
 
+  def self.topmost
+    order(Arel.sql("y + diameter/2.0 DESC")).pick(:x, :y)
+  end
+
+  def self.bottommost
+    order(Arel.sql("y - diameter/2.0 ASC")).pick(:x, :y)
+  end
+
+  def self.leftmost
+    order(Arel.sql("x - diameter/2.0 ASC")).pick(:x, :y)
+  end
+
+  def self.rightmost
+    order(Arel.sql("x + diameter/2.0 DESC")).pick(:x, :y)
+  end
+
+  def position
+    [ x, y ]
+  end
+
   def radius
     return if diameter.blank?
 
