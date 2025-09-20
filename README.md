@@ -1,8 +1,10 @@
-# App
+# Frame and Circle API
+
+Este repositório é um teste de código simulando uma API.
 
 ## Rodando o projeto
 
-Há 3 formas de executar o projeto, por ordem de:
+Há 3 formas de executar o projeto:
 - [Dev Containers](#install-devcontainer) (**recomendado**)
 - [Docker compose](#install-docker)
 - [Local](#install-local) (**não recomendado**)
@@ -24,8 +26,32 @@ $ devcontainer exec --workspace-folder . bin/rails dev
 
 ### Docker compose {#install-docker}
 
-TODO: Finalizar docker composer
+Para executar o projeto via Docker, basta executar o comando:
+
+```bash
+$ docker compose up
+```
 
 ### Local {#install-local}
 
-Rodar o projeto não é oficialmente suportado, mas você pode executar o comando `bin/setup` e instalar as dependências necessárias conforme necessário.
+Rodar o projeto localmente pode depender das dependências e pacotes instalados no seu sistema operacional. Tendo a versão correta do Ruby e o PostgresSQL server instalado, basta executar o comando `bin/rails setup` para configurar o ambientes.
+
+## Documentação da API
+
+A documentação da API é gerada através dos testes e da gem `rswag`, e se encontra em http://localhost:3000/api-docs
+
+Após alterar a API, é necessário gerar a documentação novamente:
+
+```bash
+$ bin/rake rswag:specs:swaggerize
+```
+
+## Testes
+
+Os testes são feitos via `rspec`:
+
+```bash
+$ bundle exec rspec
+```
+
+O teste gera a cobertura de código automaticamente, bastando acessar o relatório em `coverage/index.html`.
