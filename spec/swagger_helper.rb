@@ -20,7 +20,7 @@ RSpec.configure do |config|
       info: {
         title: "Frames and Circles API",
         version: "v1",
-        description: "API for managing geometric frames and circles. Frames are rectangular areas that can contain circles, with validation for overlaps and boundaries.",
+        description: "API for managing geometric frames and circles. Frames are rectangular areas that can contain circles, with validation for overlaps and boundaries."
       },
       servers: [
         {

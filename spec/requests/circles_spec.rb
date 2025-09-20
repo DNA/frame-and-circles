@@ -84,7 +84,6 @@ RSpec.describe "/circles", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested frame" do
-
       # debugger
       delete circle_url(valid_circle.id), as: :json
 

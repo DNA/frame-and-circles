@@ -184,7 +184,7 @@ RSpec.describe Circle, type: :model do
         higher_circle = Circle.create!(frame: new_frame, x: 110, y: 108, diameter: 8) # y=108, radius=4, top edge at y=112
 
         result = new_frame.circles.topmost
-        expect([result, higher_circle]).to include(result) # Both have same top edge at y=112
+        expect([ result, higher_circle ]).to include(result) # Both have same top edge at y=112
       end
     end
 
@@ -201,7 +201,7 @@ RSpec.describe Circle, type: :model do
         lower_circle = Circle.create!(frame: new_frame, x: 160, y: 142, diameter: 8) # y=142, radius=4, bottom edge at y=138
 
         result = new_frame.circles.bottommost
-        expect([result, lower_circle]).to include(result) # Both have same bottom edge at y=138
+        expect([ result, lower_circle ]).to include(result) # Both have same bottom edge at y=138
       end
     end
 
@@ -218,7 +218,7 @@ RSpec.describe Circle, type: :model do
         lefter_circle = Circle.create!(frame: new_frame, x: 194, y: 210, diameter: 8) # x=194, radius=4, left edge at x=190
 
         result = new_frame.circles.leftmost
-        expect([result, lefter_circle]).to include(result) # Both have same left edge at x=190
+        expect([ result, lefter_circle ]).to include(result) # Both have same left edge at x=190
       end
     end
 
@@ -235,7 +235,7 @@ RSpec.describe Circle, type: :model do
         righter_circle = Circle.create!(frame: new_frame, x: 256, y: 260, diameter: 8) # x=256, radius=4, right edge at x=260
 
         result = new_frame.circles.rightmost
-        expect([result, righter_circle]).to include(result) # Both have same right edge at x=260
+        expect([ result, righter_circle ]).to include(result) # Both have same right edge at x=260
       end
     end
 
