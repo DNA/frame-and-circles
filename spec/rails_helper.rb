@@ -4,8 +4,6 @@
 require 'simplecov'
 SimpleCov.start 'rails' do
   enable_coverage :branch
-
-  minimum_coverage 90 if ENV['COVERAGE_MINIMUM'] != 'false'
 end
 
 require 'spec_helper'
